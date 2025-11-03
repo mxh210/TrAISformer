@@ -24,8 +24,20 @@ import torch
 class Config():
     retrain = True
     tb_log = False
-    device = torch.device("cuda:0")
-#     device = torch.device("cpu")
+    # device = torch.device("cuda:0")
+    # device = torch.device("cpu")
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+        pin_memory = True
+        print(f"Using CUDA device: {torch.cuda.get_device_name(0)}")
+    elif torch.backends.mps.is_available() and torch.backends.mps.is_built():
+        device = torch.device("mps")
+        pin_memory = False
+        print("Using Apple MPS backend")
+    else:
+        device = torch.device("cpu")
+        pin_memory = False
+        print("Using CPU")
     
     max_epochs = 50
     batch_size = 32

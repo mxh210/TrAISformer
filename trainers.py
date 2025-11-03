@@ -163,7 +163,7 @@ class Trainer:
             is_train = split == 'Training'
             model.train(is_train)
             data = self.train_dataset if is_train else self.test_dataset
-            loader = DataLoader(data, shuffle=True, pin_memory=True,
+            loader = DataLoader(data, shuffle=True, pin_memory=config.pin_memory,
                                 batch_size=config.batch_size,
                                 num_workers=config.num_workers)
 
@@ -279,7 +279,8 @@ class Trainer:
             # ==========================================================================================
             # ==========================================================================================
             raw_model = model.module if hasattr(self.model, "module") else model
-            seqs, masks, seqlens, mmsis, time_starts = iter(aisdls["test"]).next()
+            # seqs, masks, seqlens, mmsis, time_starts = iter(aisdls["test"]).next()
+            seqs, masks, seqlens, mmsis, time_starts = next(iter(aisdls["test"]))
             n_plots = 7
             init_seqlen = INIT_SEQLEN
             seqs_init = seqs[:n_plots, :init_seqlen, :].to(self.device)
