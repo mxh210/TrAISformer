@@ -9,6 +9,7 @@ __pycache__/
 # Optional: ignore virtual environments
 .venv/
 env/
+venv/
 
 # training artifacts
 results/
